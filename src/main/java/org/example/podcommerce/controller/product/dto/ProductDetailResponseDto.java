@@ -11,7 +11,7 @@ import org.example.podcommerce.repository.product.entity.vo.ReviewStatus;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProductResponseDto {
+public class ProductDetailResponseDto {
 
     private Integer id;
 
@@ -28,11 +28,13 @@ public class ProductResponseDto {
     private ReviewStatus status;
 
     private List<SimpleImageResponseDto> images;
+
+    private List<ProductReviewHistoryResponse> history;
     @JsonFormat(pattern = "yyyy-MM-dd HH시 mm분 ss초", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-    public static ProductResponseDto from(Product entity) {
-        return new ProductResponseDto(
+    public static ProductDetailResponseDto from(Product entity) {
+        return new ProductDetailResponseDto(
             entity.getId(),
             entity.getName(),
             entity.getDescription(),
@@ -43,8 +45,8 @@ public class ProductResponseDto {
             entity.getProductImages().stream()
                 .map(SimpleImageResponseDto::from)
                 .toList(),
+            entity.getReviewHistories().stream().map(ProductReviewHistoryResponse::from).toList(),
             entity.getCreatedAt()
         );
     }
-
 }
