@@ -1,5 +1,7 @@
 package org.example.podcommerce.controller.product;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Tag(name = "상품 관리", description = "상품 생성, 조회, 상태 수정 API")
 @RestController
 @RequestMapping("/api/products")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -37,6 +40,10 @@ public class ProductController {
 
     ProductFacade productFacade;
 
+    @Operation(
+        summary = "상품 목록 조회",
+        description = "등록된 모든 상품의 목록을 페이지네이션으로 조회합니다."
+    )
     @GetMapping("")
     public ResponseEntity<List<ProductResponseDto>> getProducts(
         @Valid @ModelAttribute PageRequestDto pageRequestDto) {
@@ -54,13 +61,20 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
+    @Operation(
+        summary = "내 상품 리스트 조회",
+        description = "내가 등록한 상품들을 조회합니다."
+    )
     @GetMapping("/my")
     public ResponseEntity<List<ProductDetailResponseDto>> getMyProducts() {
         List<ProductDetailResponseDto> productDtos = productFacade.getMyProducts();
         return ResponseEntity.ok(productDtos);
     }
 
-
+    @Operation(
+        summary = "상품 상태 변경 (승인, 등록, 금지, 거절)",
+        description = "상품의 이미지들을 리뷰하여 상품 상태를 변경합니다."
+    )
     @Secured("ROLE_ADMIN")
     @PutMapping("/{productId}/review")
     public ResponseEntity<ProductDetailResponseDto> reviewProduct(
