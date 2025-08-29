@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -29,19 +30,29 @@ public class OptionGroup {
     private Integer id;
     private String name;
 
+    @Setter
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "base_product_id")
     private BaseProduct baseProduct;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "optionGroup", cascade = CascadeType.REMOVE)
-    private List<Option> options = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "optionGroup", cascade = {CascadeType.PERSIST,
+        CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Options> options = new ArrayList<>();
 
     public static OptionGroup create(BaseProduct baseProduct, String name) {
-        return new OptionGroup(
+        OptionGroup optionGroup = new OptionGroup(
             null,
             name,
             baseProduct,
             new ArrayList<>()
         );
+        baseProduct.addOptionGroup(optionGroup);
+        return optionGroup;
     }
+
+    public void addOption(Options option) {
+        this.options.add(option);
+        option.setOptionGroup(this);
+    }
+
 }

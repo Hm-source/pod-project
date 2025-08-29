@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -19,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
 @Getter
-public class Option {
+public class Options {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,19 +31,23 @@ public class Option {
     @JoinColumn(name = "base_product_id")
     private BaseProduct baseProduct;
 
+    @Setter
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "option_group_id")
     private OptionGroup optionGroup;
 
     private LocalDateTime createdAt;
 
-    public static Option create(BaseProduct baseProduct, OptionGroup optionGroup, String name) {
-        return new Option(
+    public static Options create(BaseProduct baseProduct, OptionGroup optionGroup, String name) {
+        Options option = new Options(
             null,
             name,
             baseProduct,
             optionGroup,
             LocalDateTime.now()
         );
+        optionGroup.addOption(option);
+        return option;
     }
+
 }

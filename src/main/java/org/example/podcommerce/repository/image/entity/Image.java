@@ -36,7 +36,14 @@ public class Image {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "image", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        mappedBy = "image",
+        orphanRemoval = true,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+        })
     private List<ProductImage> productImages;
 
     private LocalDateTime createdAt;

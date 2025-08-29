@@ -29,7 +29,23 @@ public class BaseProduct {
     private String name;
     private Integer price;
     private LocalDateTime createdAt;
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "baseProduct", cascade = CascadeType.REMOVE)
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "baseProduct", cascade = {CascadeType.PERSIST,
+        CascadeType.REMOVE}, orphanRemoval = true)
     private List<OptionGroup> optionGroups = new ArrayList<>();
+
+    public static BaseProduct create(String name, Integer price) {
+        return new BaseProduct(
+            null,
+            name,
+            price,
+            LocalDateTime.now(),
+            new ArrayList<>()
+        );
+    }
+
+    public void addOptionGroup(OptionGroup group) {
+        this.optionGroups.add(group);
+        group.setBaseProduct(this);
+    }
 }
