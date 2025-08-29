@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <!--<link rel="shortcut icon" type="image/png" th:href="@{/favicon-cowboy.ico}"/>-->
+  <title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<hr>
+
+<!--<form th:action="@{/login}" method="POST">-->
+<form action="/login" method="POST">
+  <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+  <label for="username">Username :</label>
+  <input id="username" name="username" type="text"><br>
+  <label for="password">Password :</label>
+  <input id="password" name="password" type="password"><br>
+  <button type="submit">Login</button>
+  <button id="kakao-login">Kakao</button>
+</form>
+<br>
+</body>
+<style>
+  body {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  label {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    padding-bottom: 4px;
+  }
+
+  button {
+    border-radius: 8px;
+    padding: 0.4em 0.8em;
+    cursor: pointer;
+  }
+
+  #kakao-login {
+    background-color: gold;
+  }
+</style>
+</html>
