@@ -2,6 +2,8 @@ package org.example.podcommerce.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.podcommerce.configuration.CustomException;
+import org.example.podcommerce.configuration.ErrorCode;
 import org.example.podcommerce.controller.user.dto.UserCreateRequestDto;
 import org.example.podcommerce.controller.user.dto.UserResponseDto;
 import org.example.podcommerce.repository.user.UserRepository;
@@ -22,7 +24,7 @@ public class UserService implements UserDetailsService {
 
     public UserResponseDto findById(Integer id) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("유저가 데이터베이스 내 존재하지 않습니다. 유저 id : " + id));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         return UserResponseDto.from(user);
     }
 
@@ -30,7 +32,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
             .orElseThrow(
-                () -> new UsernameNotFoundException("존재하지 않는 유저입니다 - username : " + username));
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     public List<UserResponseDto> findAll() {
@@ -60,7 +62,7 @@ public class UserService implements UserDetailsService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
             .orElseThrow(
-                () -> new UsernameNotFoundException("존재하지 않는 유저입니다 - username : " + username));
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
     }
 }

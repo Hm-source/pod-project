@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.example.podcommerce.configuration.CustomException;
+import org.example.podcommerce.configuration.ErrorCode;
 import org.example.podcommerce.repository.baseproduct.BaseProductRepository;
 import org.example.podcommerce.repository.baseproduct.entity.BaseProduct;
 import org.example.podcommerce.repository.baseproduct.entity.OptionGroup;
@@ -38,7 +40,7 @@ public class BaseProductService {
 
     public BaseProduct findById(Integer id) {
         return baseProductRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("해당 상품은 존재하지 않습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.BASE_PRODUCT_NOT_FOUND));
     }
 
 }

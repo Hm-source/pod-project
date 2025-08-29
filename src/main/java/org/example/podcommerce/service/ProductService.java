@@ -4,6 +4,8 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.example.podcommerce.configuration.CustomException;
+import org.example.podcommerce.configuration.ErrorCode;
 import org.example.podcommerce.controller.product.dto.PageRequestDto;
 import org.example.podcommerce.controller.product.dto.ProductCreateRequestDto;
 import org.example.podcommerce.repository.baseproduct.entity.BaseProduct;
@@ -67,8 +69,7 @@ public class ProductService {
     @Transactional
     public Product findById(Integer id) {
         return productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("해당하는 상품이 없습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
     }
-
 }

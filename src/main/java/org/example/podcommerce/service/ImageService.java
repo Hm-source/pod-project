@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.example.podcommerce.configuration.CustomException;
+import org.example.podcommerce.configuration.ErrorCode;
 import org.example.podcommerce.repository.image.ImageRepository;
 import org.example.podcommerce.repository.image.entity.Image;
 import org.example.podcommerce.repository.user.entity.User;
@@ -31,7 +33,7 @@ public class ImageService {
             return imageRepository.save(image);
 
         } catch (Exception e) {
-            throw new RuntimeException("이미지 업로드에 실패했습니다: " + file.getOriginalFilename(), e);
+            throw new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR);
         }
     }
 
