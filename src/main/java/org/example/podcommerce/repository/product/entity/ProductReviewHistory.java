@@ -35,12 +35,13 @@ public class ProductReviewHistory {
     private String reason;
     private LocalDateTime created_at;
 
-    public static ProductReviewHistory create(Product product, ReviewStatus status, String reason) {
+    public static ProductReviewHistory create(Product product, ReviewStatus status,
+        ReviewStatus newStatus, String reason) {
         return new ProductReviewHistory(
             null,
             product,
-            product.getStatus(),
             status,
+            newStatus,
             reason,
             LocalDateTime.now()
         );
